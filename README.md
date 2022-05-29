@@ -22,7 +22,7 @@ the following additional parameters `--pinentry-mode loopback` and `--batch`.
   ```yaml
   functions:
   - id: gpg
-    image: direktiv/gpg:1.0
+    image: gcr.io/direktiv/apps/gpg:1.0
     type: knative-workflow
   ```
    #### Decrypting
@@ -104,10 +104,10 @@ the following additional parameters `--pinentry-mode loopback` and `--batch`.
 
 | Name | Type | Go type | Required | Default | Description | Example |
 |------|------|---------|:--------:| ------- |-------------|---------|
-| pgp | [][PostOKBodyPgpItems](#post-o-k-body-pgp-items)| `[]*PostOKBodyPgpItems` |  | |  |  |
+| gpg | [][PostOKBodyGpgItems](#post-o-k-body-gpg-items)| `[]*PostOKBodyGpgItems` |  | |  |  |
 
 
-#### <span id="post-o-k-body-pgp-items"></span> postOKBodyPgpItems
+#### <span id="post-o-k-body-gpg-items"></span> postOKBodyGpgItems
 
   
 

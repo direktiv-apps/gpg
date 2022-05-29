@@ -29,19 +29,20 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "Description for gpg",
+    "description": "GPG En- and Decryption.",
     "title": "gpg",
     "version": "1.0",
     "x-direktiv-meta": {
       "categories": [
-        "Unknown"
+        "tools",
+        "security"
       ],
-      "container": "direktiv/gpg",
-      "issues": null,
+      "container": "gcr.io/direktiv/apps/gpg",
+      "issues": "https://github.com/direktiv-apps/gpg/issues",
       "license": "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)",
-      "long-description": "This is a longer description for the application gpg",
-      "maintainer": null,
-      "url": null
+      "long-description": "This function provides GPG to Direktiv. There are minor differences using it in a container, e.g. decryption needs\nthe following additional parameters ` + "`" + `--pinentry-mode loopback` + "`" + ` and ` + "`" + `--batch` + "`" + `.",
+      "maintainer": "[direktiv.io](https://www.direktiv.io)",
+      "url": "https://github.com/direktiv-apps/gpg"
     }
   },
   "paths": {
@@ -95,6 +96,7 @@ func init() {
                   }
                 },
                 "files": {
+                  "description": "Files are getting created before running commands.",
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/direktivFile"
@@ -114,12 +116,38 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "nice greeting",
+            "description": "Results of command array.",
             "schema": {
               "type": "object",
-              "additionalProperties": false,
-              "example": {
-                "greeting": "Hello YourName"
+              "properties": {
+                "gpg": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "success",
+                      "result"
+                    ],
+                    "properties": {
+                      "result": {
+                        "additionalProperties": false
+                      },
+                      "success": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "gpg": {
+                "gpg": [
+                  {
+                    "result": "pub   rsa3072 2022-03-23 [SC] [expires: 2024-03-22]\n      A0FD12334AA0777FB47D05854B687F9FBAC356A3\nuid           [ unknown] DirektivTestKey \u003cinfo@direktiv.io\u003e\nsub   rsa3072 2022-03-23 [E] [expires: 2024-03-22]",
+                    "success": true
+                  }
+                ]
               }
             }
           },
@@ -187,8 +215,12 @@ func init() {
         },
         "x-direktiv-examples": [
           {
-            "content": "- id: req\n     type: action\n     action:\n       function: gpg",
-            "title": "Basic"
+            "content": "- id: req\n     type: action\n      action:\n        function: gpg\n        secrets: [\"private-key.asc\", \"gpg-pwd\"]\n        files:\n        - key: public-key.asc\n          scope: namespace\n          as: public.key\n        input: \n          private: jq(.secrets.\"private-key.asc\")\n          commands: \n          - command: gpg --pinentry-mode loopback --passphrase jq(.secrets.\"gpg-pwd\") -v --output pgp.tar.gz --batch --decrypt pgp.tar.gz.pgp",
+            "title": "Decrypting"
+          },
+          {
+            "content": "- id: req\n     type: action\n      action:\n        function: gpg\n        secrets: [\"private-key.asc\", \"gpg-pwd\"]\n        files:\n        - key: public-key.asc\n          scope: namespace\n          as: public.key\n        input: \n          private: jq(.secrets.\"private-key.asc\")\n          commands: \n          - command: gpg --output out/namespace/jq(.name).tar.gz.gpg --trust-model always --batch -r A0FD12334AA0777FB47D05854B687F9FBAC356A3 --encrypt file.tar.gz",
+            "title": "Encrypting"
           }
         ],
         "x-direktiv-function": "functions:\n  - id: gpg\n    image: direktiv/gpg:1.0\n    type: knative-workflow"
@@ -252,19 +284,20 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "Description for gpg",
+    "description": "GPG En- and Decryption.",
     "title": "gpg",
     "version": "1.0",
     "x-direktiv-meta": {
       "categories": [
-        "Unknown"
+        "tools",
+        "security"
       ],
-      "container": "direktiv/gpg",
-      "issues": null,
+      "container": "gcr.io/direktiv/apps/gpg",
+      "issues": "https://github.com/direktiv-apps/gpg/issues",
       "license": "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)",
-      "long-description": "This is a longer description for the application gpg",
-      "maintainer": null,
-      "url": null
+      "long-description": "This function provides GPG to Direktiv. There are minor differences using it in a container, e.g. decryption needs\nthe following additional parameters ` + "`" + `--pinentry-mode loopback` + "`" + ` and ` + "`" + `--batch` + "`" + `.",
+      "maintainer": "[direktiv.io](https://www.direktiv.io)",
+      "url": "https://github.com/direktiv-apps/gpg"
     }
   },
   "paths": {
@@ -297,6 +330,7 @@ func init() {
                   }
                 },
                 "files": {
+                  "description": "Files are getting created before running commands.",
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/direktivFile"
@@ -316,12 +350,26 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "nice greeting",
+            "description": "Results of command array.",
             "schema": {
               "type": "object",
-              "additionalProperties": false,
-              "example": {
-                "greeting": "Hello YourName"
+              "properties": {
+                "gpg": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/GpgItems0"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "gpg": {
+                "gpg": [
+                  {
+                    "result": "pub   rsa3072 2022-03-23 [SC] [expires: 2024-03-22]\n      A0FD12334AA0777FB47D05854B687F9FBAC356A3\nuid           [ unknown] DirektivTestKey \u003cinfo@direktiv.io\u003e\nsub   rsa3072 2022-03-23 [E] [expires: 2024-03-22]",
+                    "success": true
+                  }
+                ]
               }
             }
           },
@@ -389,8 +437,12 @@ func init() {
         },
         "x-direktiv-examples": [
           {
-            "content": "- id: req\n     type: action\n     action:\n       function: gpg",
-            "title": "Basic"
+            "content": "- id: req\n     type: action\n      action:\n        function: gpg\n        secrets: [\"private-key.asc\", \"gpg-pwd\"]\n        files:\n        - key: public-key.asc\n          scope: namespace\n          as: public.key\n        input: \n          private: jq(.secrets.\"private-key.asc\")\n          commands: \n          - command: gpg --pinentry-mode loopback --passphrase jq(.secrets.\"gpg-pwd\") -v --output pgp.tar.gz --batch --decrypt pgp.tar.gz.pgp",
+            "title": "Decrypting"
+          },
+          {
+            "content": "- id: req\n     type: action\n      action:\n        function: gpg\n        secrets: [\"private-key.asc\", \"gpg-pwd\"]\n        files:\n        - key: public-key.asc\n          scope: namespace\n          as: public.key\n        input: \n          private: jq(.secrets.\"private-key.asc\")\n          commands: \n          - command: gpg --output out/namespace/jq(.name).tar.gz.gpg --trust-model always --batch -r A0FD12334AA0777FB47D05854B687F9FBAC356A3 --encrypt file.tar.gz",
+            "title": "Encrypting"
           }
         ],
         "x-direktiv-function": "functions:\n  - id: gpg\n    image: direktiv/gpg:1.0\n    type: knative-workflow"
@@ -437,6 +489,21 @@ func init() {
           "description": "If set to false the command will not print output to logs.",
           "type": "boolean",
           "default": false
+        }
+      }
+    },
+    "GpgItems0": {
+      "type": "object",
+      "required": [
+        "success",
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "additionalProperties": false
+        },
+        "success": {
+          "type": "boolean"
         }
       }
     },

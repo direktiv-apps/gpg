@@ -51,7 +51,7 @@ func NewGpgAPI(spec *loads.Document) *GpgAPI {
 	}
 }
 
-/*GpgAPI Description for gpg */
+/*GpgAPI GPG En- and Decryption. */
 type GpgAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context

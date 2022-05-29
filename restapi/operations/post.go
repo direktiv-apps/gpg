@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	"github.com/direktiv/apps/go/pkg/apps"
 )
@@ -70,7 +71,7 @@ type PostBody struct {
 	// Array of commands.
 	Commands []*PostParamsBodyCommandsItems0 `json:"commands"`
 
-	// files
+	// Files are getting created before running commands.
 	Files []apps.DirektivFile `json:"files"`
 
 	// Base64-encoded private GPG key. If not set `private.key` file will be used.
@@ -212,6 +213,180 @@ func (o *PostBody) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (o *PostBody) UnmarshalBinary(b []byte) error {
 	var res PostBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+// PostOKBody post o k body
+//
+// swagger:model PostOKBody
+type PostOKBody struct {
+
+	// gpg
+	Gpg []*PostOKBodyGpgItems0 `json:"gpg"`
+}
+
+// Validate validates this post o k body
+func (o *PostOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateGpg(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PostOKBody) validateGpg(formats strfmt.Registry) error {
+	if swag.IsZero(o.Gpg) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(o.Gpg); i++ {
+		if swag.IsZero(o.Gpg[i]) { // not required
+			continue
+		}
+
+		if o.Gpg[i] != nil {
+			if err := o.Gpg[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("postOK" + "." + "gpg" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("postOK" + "." + "gpg" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this post o k body based on the context it is used
+func (o *PostOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateGpg(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PostOKBody) contextValidateGpg(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(o.Gpg); i++ {
+
+		if o.Gpg[i] != nil {
+			if err := o.Gpg[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("postOK" + "." + "gpg" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("postOK" + "." + "gpg" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PostOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PostOKBody) UnmarshalBinary(b []byte) error {
+	var res PostOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+// PostOKBodyGpgItems0 post o k body gpg items0
+//
+// swagger:model PostOKBodyGpgItems0
+type PostOKBodyGpgItems0 struct {
+
+	// result
+	// Required: true
+	Result interface{} `json:"result"`
+
+	// success
+	// Required: true
+	Success *bool `json:"success"`
+}
+
+// Validate validates this post o k body gpg items0
+func (o *PostOKBodyGpgItems0) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateResult(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateSuccess(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PostOKBodyGpgItems0) validateResult(formats strfmt.Registry) error {
+
+	if o.Result == nil {
+		return errors.Required("result", "body", nil)
+	}
+
+	return nil
+}
+
+func (o *PostOKBodyGpgItems0) validateSuccess(formats strfmt.Registry) error {
+
+	if err := validate.Required("success", "body", o.Success); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this post o k body gpg items0 based on context it is used
+func (o *PostOKBodyGpgItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PostOKBodyGpgItems0) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PostOKBodyGpgItems0) UnmarshalBinary(b []byte) error {
+	var res PostOKBodyGpgItems0
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

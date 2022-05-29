@@ -92,7 +92,7 @@ paths:
       x-direktiv-function: |-
         functions:
           - id: gpg
-            image: direktiv/gpg:1.0
+            image: gcr.io/direktiv/apps/gpg:1.0
             type: knative-workflow
       x-direktiv-examples:
         - title: Decrypting
@@ -172,7 +172,7 @@ paths:
         200:
           description: Results of command array.
           examples:
-            pgp:
+            gpg:
               gpg:
               - result: |-
                   pub   rsa3072 2022-03-23 [SC] [expires: 2024-03-22]
@@ -183,7 +183,7 @@ paths:
           schema:
             type: object
             properties:
-              pgp:
+              gpg:
                 type: array
                 items:
                   type: object
@@ -195,6 +195,22 @@ paths:
                       type: boolean
                     result:
                       additionalProperties: {}
+          # schema:
+          #   type: object
+          #   additionalProperties: {}
+            # properties:
+            #   pgp:
+            #     type: array
+            #     items:
+            #       type: object
+            #       required:
+            #       - success
+            #       - result
+            #       properties:
+            #         success:
+            #           type: boolean
+            #         result:
+            #           additionalProperties: {}
         default:
           description: generic error response
           headers:

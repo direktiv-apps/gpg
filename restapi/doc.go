@@ -2,7 +2,7 @@
 
 // Package restapi gpg
 //
-//  Description for gpg
+//  GPG En- and Decryption.
 //  Schemes:
 //    http
 //  Host: localhost

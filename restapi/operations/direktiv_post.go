@@ -2,12 +2,12 @@ package operations
 
 import (
 	"context"
-	"encoding/json"
 	"strings"
 	"sync"
 
 	"github.com/direktiv/apps/go/pkg/apps"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
 
 	"gpg/models"
 )
@@ -43,7 +43,7 @@ type accParamsTemplate struct {
 }
 
 func PostDirektivHandle(params PostParams) middleware.Responder {
-	var resp interface{}
+	resp := &PostOKBody{}
 
 	var (
 		err  error
@@ -162,7 +162,10 @@ func PostDirektivHandle(params PostParams) middleware.Responder {
 
 	responseBytes := []byte(s)
 
-	err = json.Unmarshal(responseBytes, &resp)
+	// validate
+	resp.UnmarshalBinary(responseBytes)
+	err = resp.Validate(strfmt.Default)
+
 	if err != nil {
 		return generateError(outErr, err)
 	}
