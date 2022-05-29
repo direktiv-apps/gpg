@@ -73,7 +73,7 @@ func PostDirektivHandle(params PostParams) middleware.Responder {
 	responses = append(responses, ret)
 
 	// if foreach returns an error there is no continue
-	cont = convertTemplateToBool("false", accParams, true)
+	cont = convertTemplateToBool("<no value>", accParams, true)
 
 	if err != nil && !cont {
 		errName := cmdErr
@@ -129,7 +129,7 @@ func PostDirektivHandle(params PostParams) middleware.Responder {
 	responses = append(responses, ret)
 
 	// if foreach returns an error there is no continue
-	cont = convertTemplateToBool("false", accParams, true)
+	cont = convertTemplateToBool("<no value>", accParams, true)
 
 	if err != nil && !cont {
 		errName := cmdErr
@@ -225,7 +225,7 @@ func runCommand1(ctx context.Context,
 	cmd, err := templateString(`{{- if (empty .Public) }}
 echo "no public key in request"
 {{- else }}
-bash -c 'echo {{ .Public }} | base64 --decode > public.key'
+bash -c 'echo {{ .Public }} | base64 --decode > {{ .DirektivDir }}/public.key'
 {{- end }}`, at)
 	if err != nil {
 		ir[resultKey] = err.Error()
@@ -263,7 +263,7 @@ func runCommand2(ctx context.Context,
 	cmd, err := templateString(`{{- if (empty .Private) }}
 echo "no private key in request"
 {{- else }}
-bash -c 'echo {{ .Private }} | base64 --decode > private.key'
+bash -c 'echo {{ .Private }} | base64 --decode > {{ .DirektivDir }}/private.key'
 {{- end }}`, at)
 	if err != nil {
 		ir[resultKey] = err.Error()
@@ -298,7 +298,7 @@ func runCommand3(ctx context.Context,
 		params.DirektivDir,
 	}
 
-	cmd, err := templateString(`gpg --batch --import private.key`, at)
+	cmd, err := templateString(`gpg --batch --import {{ .DirektivDir }}/private.key`, at)
 	if err != nil {
 		ir[resultKey] = err.Error()
 		return ir, err
@@ -332,7 +332,7 @@ func runCommand4(ctx context.Context,
 		params.DirektivDir,
 	}
 
-	cmd, err := templateString(`gpg --batch --import public.key`, at)
+	cmd, err := templateString(`gpg --batch --import {{ .DirektivDir }}/public.key`, at)
 	if err != nil {
 		ir[resultKey] = err.Error()
 		return ir, err

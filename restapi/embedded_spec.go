@@ -175,24 +175,24 @@ func init() {
             },
             {
               "action": "exec",
-              "exec": "{{- if (empty .Public) }}\necho \"no public key in request\"\n{{- else }}\nbash -c 'echo {{ .Public }} | base64 --decode \u003e public.key'\n{{- end }}",
+              "exec": "{{- if (empty .Public) }}\necho \"no public key in request\"\n{{- else }}\nbash -c 'echo {{ .Public }} | base64 --decode \u003e {{ .DirektivDir }}/public.key'\n{{- end }}",
               "print": false,
               "silent": true
             },
             {
               "action": "exec",
-              "exec": "{{- if (empty .Private) }}\necho \"no private key in request\"\n{{- else }}\nbash -c 'echo {{ .Private }} | base64 --decode \u003e private.key'\n{{- end }}",
+              "exec": "{{- if (empty .Private) }}\necho \"no private key in request\"\n{{- else }}\nbash -c 'echo {{ .Private }} | base64 --decode \u003e {{ .DirektivDir }}/private.key'\n{{- end }}",
               "print": false,
               "silent": true
             },
             {
               "action": "exec",
-              "exec": "gpg --batch --import private.key"
+              "exec": "gpg --batch --import {{ .DirektivDir }}/private.key"
             },
             {
               "action": "exec",
               "continue": false,
-              "exec": "gpg --batch --import public.key"
+              "exec": "gpg --batch --import {{ .DirektivDir }}/public.key"
             },
             {
               "action": "foreach",
@@ -223,7 +223,7 @@ func init() {
             "title": "Encrypting"
           }
         ],
-        "x-direktiv-function": "functions:\n  - id: gpg\n    image: direktiv/gpg:1.0\n    type: knative-workflow"
+        "x-direktiv-function": "functions:\n  - id: gpg\n    image: gcr.io/direktiv/apps/gpg:1.0\n    type: knative-workflow"
       },
       "delete": {
         "parameters": [
@@ -397,24 +397,24 @@ func init() {
             },
             {
               "action": "exec",
-              "exec": "{{- if (empty .Public) }}\necho \"no public key in request\"\n{{- else }}\nbash -c 'echo {{ .Public }} | base64 --decode \u003e public.key'\n{{- end }}",
+              "exec": "{{- if (empty .Public) }}\necho \"no public key in request\"\n{{- else }}\nbash -c 'echo {{ .Public }} | base64 --decode \u003e {{ .DirektivDir }}/public.key'\n{{- end }}",
               "print": false,
               "silent": true
             },
             {
               "action": "exec",
-              "exec": "{{- if (empty .Private) }}\necho \"no private key in request\"\n{{- else }}\nbash -c 'echo {{ .Private }} | base64 --decode \u003e private.key'\n{{- end }}",
+              "exec": "{{- if (empty .Private) }}\necho \"no private key in request\"\n{{- else }}\nbash -c 'echo {{ .Private }} | base64 --decode \u003e {{ .DirektivDir }}/private.key'\n{{- end }}",
               "print": false,
               "silent": true
             },
             {
               "action": "exec",
-              "exec": "gpg --batch --import private.key"
+              "exec": "gpg --batch --import {{ .DirektivDir }}/private.key"
             },
             {
               "action": "exec",
               "continue": false,
-              "exec": "gpg --batch --import public.key"
+              "exec": "gpg --batch --import {{ .DirektivDir }}/public.key"
             },
             {
               "action": "foreach",
@@ -445,7 +445,7 @@ func init() {
             "title": "Encrypting"
           }
         ],
-        "x-direktiv-function": "functions:\n  - id: gpg\n    image: direktiv/gpg:1.0\n    type: knative-workflow"
+        "x-direktiv-function": "functions:\n  - id: gpg\n    image: gcr.io/direktiv/apps/gpg:1.0\n    type: knative-workflow"
       },
       "delete": {
         "parameters": [

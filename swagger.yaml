@@ -135,7 +135,7 @@ paths:
             {{- if (empty .Public) }}
             echo "no public key in request"
             {{- else }}
-            bash -c 'echo {{ .Public }} | base64 --decode > public.key'
+            bash -c 'echo {{ .Public }} | base64 --decode > {{ .DirektivDir }}/public.key'
             {{- end }}
           silent: true
           print: false
@@ -144,14 +144,14 @@ paths:
             {{- if (empty .Private) }}
             echo "no private key in request"
             {{- else }}
-            bash -c 'echo {{ .Private }} | base64 --decode > private.key'
+            bash -c 'echo {{ .Private }} | base64 --decode > {{ .DirektivDir }}/private.key'
             {{- end }}
           silent: true
           print: false
         - action: exec
-          exec: gpg --batch --import private.key
+          exec: gpg --batch --import {{ .DirektivDir }}/private.key
         - action: exec
-          exec: gpg --batch --import public.key
+          exec: gpg --batch --import {{ .DirektivDir }}/public.key
           continue: false
         - action: foreach
           loop: .Commands 
