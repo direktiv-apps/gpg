@@ -6,6 +6,35 @@ Background:
 * string pubBase64 = read('data/public.key.base64')
 * def req = '{}'
 
+# list all keys
+Scenario: simple test no key
+
+    Given path '/'
+    Given header Direktiv-ActionID = 'development'
+    Given header Direktiv-Tempdir = '/tmp'
+    And request 
+    """
+    { "commands": [
+      {
+        "command": "gpg --list-keys"
+      }
+    ]
+    }
+    """
+    When method post
+    Then status 200
+    And match $ == 
+    """
+    {
+    "gpg": [
+    {
+      "result": "#notnull",
+      "success": true
+    }
+    ]
+    }
+    """
+
 # simple test, uses priv/pub key from upload
 # checks if it returns the key
 Scenario: simple test
