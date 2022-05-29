@@ -46,7 +46,7 @@ Scenario: simple test
     """
     { "commands": [
       {
-        "command": "gpg --list-keys FB08C2D9A7FDA04ECDF0EE8B4F8DEEEE95F5D3D2"
+        "command": "gpg --list-keys 792DDB10CD01F96186E546039104BB46A497F800"
       }
     ]
     }
@@ -67,7 +67,7 @@ Scenario: simple test
 
 # add keys in request and check after
 Scenario: add keys
-    # "bash -c 'echo password | gpg -v --batch --passphrase-fd 0 -d hello.txt.gpg'"
+
     Given path '/'
     Given header Direktiv-ActionID = 'development'
     Given header Direktiv-Tempdir = '/tmp'
@@ -78,7 +78,7 @@ Scenario: add keys
        "private": "#(privBase64)",
        "commands": [
          {
-          "command": "gpg --list-keys FB08C2D9A7FDA04ECDF0EE8B4F8DEEEE95F5D3D2"
+          "command": "gpg --list-keys 792DDB10CD01F96186E546039104BB46A497F800"
          }
        ]
     }
@@ -114,7 +114,7 @@ Scenario: decrypt
          "command": "rm -f /tmp/out.txt"
          },
          {
-         "command": "gpg --output /tmp/out.pgp --trust-model always -v --batch -r FB08C2D9A7FDA04ECDF0EE8B4F8DEEEE95F5D3D2 --encrypt hello.txt"
+         "command": "gpg --output /tmp/out.pgp --trust-model always -v --batch -r 792DDB10CD01F96186E546039104BB46A497F800 --encrypt hello.txt"
          },
          {
          "command": "gpg --pinentry-mode loopback --passphrase password -v --output /tmp/out.txt --batch --decrypt /tmp/out.pgp"
