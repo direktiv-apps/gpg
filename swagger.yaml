@@ -92,7 +92,7 @@ paths:
       x-direktiv-function: |-
         functions:
           - id: gpg
-            image: gcr.io/direktiv/apps/gpg:1.0
+            image: gcr.io/direktiv/apps/gpg:1.1
             type: knative-workflow
       x-direktiv-examples:
         - title: Decrypting
