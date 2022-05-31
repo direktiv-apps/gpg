@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: GPG En- and Decryption VERSION1.
+  description: GPG En- and Decryption.
   title: gpg
-  version: "1.1"
+  version: "1.0"
   x-direktiv-meta:
     container: gcr.io/direktiv/apps/gpg
     maintainer: |-
@@ -16,7 +16,7 @@ info:
       [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
     long-description: |-
       This function provides GPG to Direktiv. There are minor differences using it in a container, e.g. decryption needs
-      the following additional parameters `--pinentry-mode loopback` and `--batch` VERSION1.
+      the following additional parameters `--pinentry-mode loopback` and `--batch`.
 consumes:
 - application/json
 produces:
@@ -92,7 +92,7 @@ paths:
       x-direktiv-function: |-
         functions:
           - id: gpg
-            image: gcr.io/direktiv/apps/gpg:1.1
+            image: gcr.io/direktiv/apps/gpg:1.0
             type: knative-workflow
       x-direktiv-examples:
         - title: Decrypting
