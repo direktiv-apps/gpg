@@ -1,5 +1,5 @@
 
-# gpg 1.0
+# gpg 1.1
 
 GPG En- and Decryption.
 
@@ -22,7 +22,7 @@ the following additional parameters `--pinentry-mode loopback` and `--batch`.
   ```yaml
   functions:
   - id: gpg
-    image: gcr.io/direktiv/apps/gpg:1.0
+    image: gcr.io/direktiv/apps/gpg:1.1
     type: knative-workflow
   ```
    #### Decrypting
